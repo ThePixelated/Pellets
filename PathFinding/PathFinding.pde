@@ -21,16 +21,30 @@ Entity player;
 
 int speed = 1;
 
+JSONObject playerData;
+JSONObject targetData;
+
 void setup() {
   size(800, 600, P2D);
   smooth();
   
   player = new Entity(40, 50, 30);
   target = new Entity(int(random(12, width - 12)), int(random(12, height - 12)), 12);
+  
+  playerData = loadJSONObject("data/player.json");
+  targetData = loadJSONObject("data/target.json");
+  
+  playerData.setInt("x", player.x);
+  playerData.setInt("y", player.y);
+  saveJSONObject(playerData, "data/player.json");
+  
+  targetData.setInt("x", target.x);
+  targetData.setInt("y", target.y);
+  saveJSONObject(targetData, "data/target.json");
 }
 
 void draw() {
-  background(245);
+  background(250);
   
   straightFinding();
   
@@ -44,6 +58,10 @@ void draw() {
 void mousePressed() {
   target.x = mouseX;
   target.y = mouseY;
+  
+  targetData.setInt("x", target.x);
+  targetData.setInt("y", target.y);
+  saveJSONObject(targetData, "data/target.json");
 }
 
 void straightFinding() {
@@ -60,6 +78,10 @@ void straightFinding() {
   } else {
     player.y -= speed;
   }
+  
+  playerData.setInt("x", player.x);
+  playerData.setInt("y", player.y);
+  saveJSONObject(playerData, "data/player.json");
 }
 
 void lineRender() {
@@ -76,5 +98,9 @@ void pos() {
   if (xCondition && yCondition) {
     target.x = int(random(40, width - 40));
     target.y = int(random(40, height - 40));
+    
+    targetData.setInt("x", target.x);
+    targetData.setInt("y", target.y);
+    saveJSONObject(targetData, "data/target.json");
   }
 }
